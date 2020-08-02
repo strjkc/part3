@@ -51,10 +51,17 @@ app.delete('/api/persons/:id', (request, response) => {
 })
 
 app.post('/api/persons', (request, response) => {
-  const idOfNewPerson = Math.floor(Math.random() * (10000000 - 1 + 1) +1)
-  const newPerson = {...request.body, id: idOfNewPerson}
-  persons.push(newPerson)
-  response.json(newPerson)
+  const data = request.body
+  if (!data.name || !data.number)
+    response.status(400).json({error: 'content missing'})
+  else if (persons.find(person => person.name === data.name))
+    response.status(400).json({error: 'name already present'})
+  else {
+    const idOfNewPerson = Math.floor(Math.random() * (10000000 - 1 + 1) +1)
+    const newPerson = {...data, id: idOfNewPerson}
+    persons.push(newPerson)
+    response.json(newPerson)
+  }
 })
 
 app.listen(PORT, () => console.log('app listening on port ', PORT))
