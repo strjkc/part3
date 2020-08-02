@@ -26,6 +26,7 @@ let persons = [
       }
     ]
   
+app.use(express.json())
 app.get('/api/persons', (request, response) => response.json(persons) )
 
 app.get('/info', (request, response) => response.send(`Phonebook has info for ${persons.length} people
@@ -47,6 +48,13 @@ app.delete('/api/persons/:id', (request, response) => {
     response.status(204).end()
   else
     response.status(404).end()
+})
+
+app.post('/api/persons', (request, response) => {
+  const idOfNewPerson = Math.ceil(Math.random() * 10000000)
+  const newPerson = {...request.body, id: idOfNewPerson}
+  persons.push(newPerson)
+  response.json(newPerson)
 })
 
 app.listen(PORT, () => console.log('app listening on port ', PORT))
