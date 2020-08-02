@@ -3,7 +3,7 @@ const app = express()
 
 const PORT = 3001
 
-const persons = [
+let persons = [
       {
         name: 'Arto Hellas',
         number: '040-123456',
@@ -36,6 +36,15 @@ app.get('/api/persons/:id', (request, response) => {
   const foundPerson = persons.find(person => person.id === Number(request.params.id))
   if (foundPerson)
     response.json(foundPerson)
+  else
+    response.status(404).end()
+})
+
+app.delete('/api/persons/:id', (request, response) => {
+  const initialLength =  persons.length
+  persons = persons.filter(person => person.id !== Number(request.params.id))
+  if (initialLength > persons.length)
+    response.status(204).end()
   else
     response.status(404).end()
 })
