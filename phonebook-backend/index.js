@@ -51,7 +51,7 @@ app.delete('/api/persons/:id', (request, response) => {
 })
 
 app.post('/api/persons', (request, response) => {
-  const idOfNewPerson = Math.ceil(Math.random() * 10000000)
+  const idOfNewPerson = Math.floor(Math.random() * (10000000 - 1 + 1) +1)
   const newPerson = {...request.body, id: idOfNewPerson}
   persons.push(newPerson)
   response.json(newPerson)
