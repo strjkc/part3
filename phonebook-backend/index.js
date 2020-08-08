@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
@@ -44,12 +45,12 @@ app.get('/api/persons/:id', (request, response) => {
 })
 
 app.delete('/api/persons/:id', (request, response) => {
-  const initialLength =  persons.length
-  persons = persons.filter(person => person.id !== Number(request.params.id))
-  if (initialLength > persons.length)
-    response.status(204).end()
-  else
-    response.status(404).end()
+  Person.findByIdAndRemove(request.params.id)
+    .then(DBresponse => {
+      response.status(204).end()
+    } 
+      )
+
 })
 
 app.post('/api/persons', (request, response) => {
@@ -60,7 +61,7 @@ app.post('/api/persons', (request, response) => {
     const newPerson = new Person({...data})
     newPerson.save()
       .then( DBresponse => {
-        console.log(DBresponse)
+        console.log('Database Response: ', DBresponse)
         response.json(DBresponse)}
       )
   }
