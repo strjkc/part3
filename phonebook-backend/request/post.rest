@@ -1,7 +1,7 @@
-POST https://phonebook-part3-backend.herokuapp.com/
+POST http://localhost:3001/api/persons
 Content-Type: application/json
 
 {
-    "name": "Strahinja",
-    "number": "0000000"
+    "name": "Strahinja Jokic",
+    "number": "123456789"
 }
