@@ -32,9 +32,12 @@ app.get('/api/persons', (request, response) => {
   )
 } )
 
-app.get('/info', (request, response) => response.send(`Phonebook has info for ${persons.length} people
-<br><br>
-${Date()}`))
+app.get('/info', (request, response) => {
+  Person.find({})
+  .then(DBresponse => response.send(`Phonebook has info for ${DBresponse.length} people
+  <br><br>
+  ${Date()}`) )
+  })
 
 app.get('/api/persons/:id', (request, response, next) => {
   Person.findById(request.params.id)
