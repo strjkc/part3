@@ -52,7 +52,7 @@ app.delete('/api/persons/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response, next) => {
   const data = request.body
   if (!data.name || !data.number)
     response.status(400).json({error: 'content missing'})
@@ -62,8 +62,16 @@ app.post('/api/persons', (request, response) => {
       .then( DBresponse => {
         console.log('Database Response: ', DBresponse)
         response.json(DBresponse)}
-      )
+      ).catch(error => next(error))
   }
+})
+
+app.put('/api/persons/:id', (request, response, next) => {
+  Person.findByIdAndUpdate(request.params.id, {...request.body}, {new: true})
+  .then(DBresponse => {
+    console.log('DBres:',DBresponse)
+    response.json(DBresponse)})
+  .catch(error => next(error))
 })
 
 const errorHandler = (error, req, res, next) => {

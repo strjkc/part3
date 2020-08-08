@@ -1,4 +1,6 @@
 const mongoose = require('mongoose')
+mongoose.set('useFindAndModify', false)
+
 
 const url = process.env.DB_URL
 
