@@ -36,12 +36,12 @@ app.get('/info', (request, response) => response.send(`Phonebook has info for ${
 <br><br>
 ${Date()}`))
 
-app.get('/api/persons/:id', (request, response) => {
-  const foundPerson = persons.find(person => person.id === Number(request.params.id))
-  if (foundPerson)
-    response.json(foundPerson)
-  else
-    response.status(404).end()
+app.get('/api/persons/:id', (request, response, next) => {
+  Person.findById(request.params.id)
+  .then( DBresponse => DBresponse 
+          ? response.json(DBresponse)
+          : response.status(404).end()
+  ).catch(error => next(error))
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
